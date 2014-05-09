@@ -1,0 +1,319 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RegEx Tester</title>
+	<script src="jquery-1.11.1.min.js"></script>
+
+
+	<script>
+
+		console.log("test");
+
+		$(document).ready(function(){
+			// Create Buttons
+			var btnDiv = document.createElement("div");
+			document.body.appendChild(btnDiv);
+			btnDiv.style.width="500px";
+			btnDiv.style.margin = "auto";
+			btnDiv.setAttribute("id", "btnDiv");
+
+			var destroyBtn = document.createElement("button");
+			btnDiv.appendChild(destroyBtn);
+			destroyBtn.innerHTML = "Destroy";
+			destroyBtn.style.width = "200px";
+			destroyBtn.style.left = "5%";
+			destroyBtn.style.marginTop = "20px";
+			destroyBtn.style.marginRight = "100px";
+			destroyBtn.style.cssFloat = "left";
+			destroyBtn.setAttribute("id", "destroyBtn");
+
+			var resetBtn = document.createElement("button");
+			btnDiv.appendChild(resetBtn);
+			resetBtn.innerHTML = "Reset";
+			resetBtn.style.width = "200px";
+			resetBtn.style.right = "5%";
+			resetBtn.style.marginTop = "20px";
+			resetBtn.style.cssFloat = "left";
+			resetBtn.setAttribute("id", "resetBtn");
+
+			createTester();
+
+			$("#destroyBtn").click(function() {
+				$("#formDiv").slideUp();
+			});
+			$("#resetBtn").click(function() {
+				$("#formDiv").slideDown();
+			})
+
+			setUpListeners()
+		
+		});
+
+		// RegEx Form
+		function createTester() {
+
+			var formDiv = document.createElement("div");
+			document.body.appendChild(formDiv);
+			formDiv.style.position = "relative";
+			formDiv.setAttribute("id", "formDiv");
+			formDiv.style.width = "75%";
+			formDiv.style.height = "75%";
+			formDiv.style.top = "100px";
+			formDiv.style.margin = "auto";
+			formDiv.style.marginTop = "20px"
+			formDiv.style.textAlign = "center";
+			formDiv.style.clear = "left";
+
+			var title = document.createElement("h1");
+			formDiv.appendChild(title);
+			title.innerHTML = "RegEx Tester";
+			title.style.fontSize = "50px";
+			title.setAttribute("id", "header");
+
+			var boxUno = document.createElement("div");
+			formDiv.appendChild(boxUno);
+			boxUno.style.width = "40%";
+			boxUno.style.left = "30%"
+			boxUno.style.position ="relative";
+			boxUno.style.cssFloat = "left";
+			boxUno.style.clear = "both";
+
+			var boxDos = document.createElement("div");
+			formDiv.appendChild(boxDos);
+			boxDos.style.width = "40%";
+			boxDos.style.left = "30%"
+			boxDos.style.position ="relative";
+			boxDos.style.cssFloat = "left";
+			boxDos.style.clear = "both";
+
+			var boxTres = document.createElement("div");
+			formDiv.appendChild(boxTres);
+			boxTres.style.width = "40%";
+			boxTres.style.left = "30%"
+			boxTres.style.position ="relative";
+			boxTres.style.cssFloat = "left";
+			boxTres.style.clear = "both";
+
+			var regexText = document.createElement("p");
+			boxUno.appendChild(regexText);
+			regexText.innerHTML = "Enter a regular expression:";
+			regexText.style.fontSize = "1em";
+
+			var inputRegex = document.createElement("input");
+			boxUno.appendChild(inputRegex);
+			inputRegex.setAttribute("id", "inputRegex");
+			inputRegex.type = "text";
+			inputRegex.style.width = "45%";
+			inputRegex.style.textIndent = "7px";
+			inputRegex.placeholder = "Enter your RegEx without slashes";
+			inputRegex.style.cssFloat = "left";
+
+			var dropDown = document.createElement("select");
+			boxUno.appendChild(dropDown);
+			dropDown.setAttribute("id", "dropDown");
+			dropDown.style.width = "45%";
+			dropDown.style.textIndent = "7px";
+			dropDown.style.cssFloat = "right";
+
+			var option1 = document.createElement("option");
+			dropDown.appendChild(option1);
+			option1.innerHTML = "Custom";
+			option1.setAttribute("id", "option1");
+			option1.setAttribute("value", "");
+
+			var option2 = document.createElement("option");
+			dropDown.appendChild(option2);
+			option2.setAttribute("value", "\w+");
+			option2.innerHTML = "E-mail";
+			option2.setAttribute("id", "option2");
+			option2.setAttribute("value", "\\w+@[\\w\.]+\\w");
+
+			var option3 = document.createElement("option");
+			dropDown.appendChild(option3);
+			option3.setAttribute("value", "\d+");
+			option3.innerHTML = "Numbers";
+			option3.setAttribute("id", "option3");
+			option3.setAttribute("value", "\\d+");
+
+			var option4 = document.createElement("option");
+			dropDown.appendChild(option4);
+			option4.setAttribute("value", "\d+");
+			option4.innerHTML = "Phone Number";
+			option4.setAttribute("id", "option4");
+			option4.setAttribute("value", "\\(?(229|404|478|678|706|770|912)[.\\.\\)\\-]+(\\d{3})[.\\.\\)\\-]+(\\d{4})");
+
+			var sampleText = document.createElement("p");
+			boxDos.appendChild(sampleText);
+			sampleText.innerHTML = "Enter some sample text:";
+			sampleText.style.fontSize = "1em";
+
+			var inputText = document.createElement("input");
+			boxDos.appendChild(inputText);
+			inputText.setAttribute("id", "inputText");
+			inputText.type = "text";
+			inputText.style.position = "relative";
+			inputText.style.width = "70%";
+			inputText.style.left = "15%";
+			inputText.style.textIndent = "7px";
+			inputText.placeholder = "Enter sample text here";
+			inputText.style.cssFloat = "left";
+
+			var testAny = document.createElement("button");
+			boxTres.appendChild(testAny);
+			testAny.innerHTML = "Test for any match";
+			testAny.style.position = "relative";
+			testAny.style.width = "50%";
+			testAny.style.marginTop = "20px";
+			testAny.style.cssFloat = "left";
+			testAny.style.clear = "left";
+			testAny.setAttribute("id", "testAnyBtn");
+
+			var testExact = document.createElement("button");
+			boxTres.appendChild(testExact);
+			testExact.innerHTML = "Test for exact match";
+			testExact.style.position = "relative";
+			testExact.style.width = "50%";
+			testExact.style.marginTop = "20px";
+			testExact.style.cssFloat = "right";
+			testExact.style.clear = "right";
+			testExact.setAttribute("id", "testExactBtn");
+
+			var outputText = document.createElement("label");
+			boxTres.appendChild(outputText);
+			outputText.innerHTML = "Output:";
+			outputText.style.width = "30%";
+			outputText.style.fontSize = "1em";
+			outputText.style.marginTop = "20px"
+			outputText.style.fontWeight = "400";
+			outputText.style.cssFloat = "left";
+
+			var outputText = document.createElement("input");
+			boxTres.appendChild(outputText);
+			outputText.setAttribute("id", "outputText");
+			outputText.type = "text";
+			outputText.style.width = "60%";
+			outputText.style.marginTop = "20px";
+			outputText.style.textIndent = "7px";
+			outputText.style.cssFloat = "left";
+		};
+
+
+
+
+
+		//Regex Code
+		var reg1 = /[a-z]+(ap|op)/g;
+		var sentence = "here's a ton of words: chop, hop, bop, top, stop, crop, trap, tap, chap, that the app should read.";
+		console.log(sentence);
+		console.log(sentence.match(reg1));
+
+
+		var reg2 = /^\D[a-zA-Z0-9]{8,}/g;
+		var passwordInput = "yomommafat";
+		console.log("password: "+passwordInput);
+		console.log(passwordInput.match(reg2));
+
+		var reg3 = /\((229|404|478|678|706|770|912)[.\.\)\-]+(\d{3})[.\.\)\-]+(\d{4})/g;
+		var phoneInput = "(404)555-5656";
+		console.log("phone: "+phoneInput);
+		var newPhone = phoneInput.match(reg3, "$1-$2-$3");
+		console.log("new phone= "+newPhone);
+		newNewPhone = newPhone[0].replace(reg3, "$1-$2-$3")
+		console.log("newNewPhone= "+newNewPhone);
+
+
+		function setUpListeners() {
+
+			// Regex Tester
+			$("#dropDown").change(function() {
+				var attrValue = $("option:selected").attr("value");
+				$("#inputRegex").val(attrValue);
+			});
+
+			$("#testAnyBtn").click(function() {
+				matchAny();
+			});
+
+			$("#testExactBtn").click(function() {
+				matchExact();
+			})
+		}
+
+		function testPhone(phoneInput) {
+			console.log("phone: "+phoneInput);
+			var reg4 = new RegExp($("#inputRegex").val());
+			var newPhone = phoneInput.match(reg4);
+			console.log("new phone= "+newPhone);
+			if (newPhone === null) {
+				$("#outputText").val("Did not match.");
+			} else {
+				newNewPhone = newPhone[0].replace(reg4, "$1-$2-$3")
+				$("#outputText").val(newNewPhone);
+				console.log("newNewphone= "+newNewPhone);
+			}
+		}
+
+		function testPhoneExact(phoneInput) {
+			console.log("phone: "+phoneInput);
+			var reg5 = new RegExp("^"+$("#inputRegex").val()+"$");
+			console.log(reg5);
+			var newPhone = phoneInput.match(reg5);
+			console.log("new phone= "+newPhone);
+			if (newPhone === null) {
+				$("#outputText").val("Did not match.");
+			} else {
+				newNewPhone = newPhone[0].replace(reg5, "$1-$2-$3")
+				$("#outputText").val(newNewPhone);
+				console.log("newNewPhone= "+newNewPhone);
+			}
+		}
+
+		function matchAny() {
+			console.log("any run")
+
+			if ($("option:selected").attr("id") === "option4"){
+				console.log("test phone");
+				testPhone($("#inputText").val());
+			} else {
+				console.log("test other");
+				var regExFromInput = new RegExp($("#inputRegex").val());
+				var textFromInput = $("#inputText").val();
+				var regExpOutput = textFromInput.match(regExFromInput);
+				console.log(regExFromInput);
+				console.log(textFromInput);
+				console.log(textFromInput.match(regExFromInput));
+				$("#outputText").val(regExpOutput[0]);
+			}
+		}
+
+		function matchExact() {
+			console.log("exact run");
+
+			if ($("option:selected").attr("id") === "option4"){
+				console.log("test phone");
+				testPhoneExact($("#inputText").val());
+			} else{
+				console.log("test other");
+				var regExFromInput = new RegExp("/^"+$("#inputRegex").val()+"$/g");
+				var textFromInput = $("#inputText").val();
+				var regExpOutput = textFromInput.match(regExFromInput);
+				console.log(regExFromInput);
+				console.log(textFromInput);
+				console.log(textFromInput.match(regExFromInput));
+				if(regExpOutput === null) {
+					$("#outputText").val("Did not match.");
+				} else {
+					$("#outputText").val(regExpOutput[0]);
+				}
+			}
+		}
+
+	</script>
+
+</head>
+<body>
+	
+</body>
+</html>
